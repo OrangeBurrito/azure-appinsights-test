@@ -2,9 +2,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
-
-builder.Services.AddApplicationInsightsTelemetry();
 builder.Logging.AddApplicationInsights();
+
 var app = builder.Build();
 
 // Define a minimal API endpoint. The lambda receives an ILogger from DI.
