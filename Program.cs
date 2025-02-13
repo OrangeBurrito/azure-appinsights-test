@@ -1,18 +1,33 @@
 var builder = WebApplication.CreateBuilder(args);
 
+// Clear any default logging providers.
 builder.Logging.ClearProviders();
+
+// Add the Console logger.
 builder.Logging.AddConsole();
+
+// Add Application Insights as a logging provider.
 builder.Logging.AddApplicationInsights();
+
+// Remove the default filtering rule for the Application Insights logger,
+// ensuring that ILogger.LogInformation entries are captured.
+builder.Services.Configure<LoggerFilterOptions>(options => {
+    var ruleToRemove = options.Rules.FirstOrDefault(
+        rule => rule.ProviderName == "Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider");
+
+    if (ruleToRemove != null) {
+        options.Rules.Remove(ruleToRemove);
+    }
+});
 
 var app = builder.Build();
 
-// Define a minimal API endpoint. The lambda receives an ILogger from DI.
 app.MapGet("/", (ILogger<Program> logger) => {
-    var yyyyMMdd_HHmmss = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-    // Log an information-level message
-    logger.LogInformation("{time} - Endpoint '/' was hit - returning hello world", yyyyMMdd_HHmmss);
-    return $"hello world {yyyyMMdd_HHmmss}";
+    var timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+    logger.LogInformation("{time} - Endpoint '/' was hit - returning hello world", timestamp);
+    return $"hello world {timestamp}";
 });
+
 
 // get random number endpoint return number between 1000 and 9999
 app.MapGet("/random", (ILogger<Program> logger) => {
