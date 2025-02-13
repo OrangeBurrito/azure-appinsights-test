@@ -2,17 +2,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
-
 builder.Logging.AddApplicationInsights();
 
-builder.Services.Configure<LoggerFilterOptions>(options => {
-    var ruleToRemove = options.Rules.FirstOrDefault(
-        rule => rule.ProviderName == "Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider");
+builder.Services.AddApplicationInsightsTelemetry();
 
-    if (ruleToRemove != null) {
-        options.Rules.Remove(ruleToRemove);
-    }
-});
+// builder.Services.Configure<LoggerFilterOptions>(options => {
+//     var ruleToRemove = options.Rules.FirstOrDefault(
+//         rule => rule.ProviderName == "Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider");
+
+//     if (ruleToRemove != null) {
+//         options.Rules.Remove(ruleToRemove);
+//     }
+// });
 
 var app = builder.Build();
 
