@@ -1,16 +1,10 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Clear any default logging providers.
 builder.Logging.ClearProviders();
-
-// Add the Console logger.
 builder.Logging.AddConsole();
 
-// Add Application Insights as a logging provider.
 builder.Logging.AddApplicationInsights();
 
-// Remove the default filtering rule for the Application Insights logger,
-// ensuring that ILogger.LogInformation entries are captured.
 builder.Services.Configure<LoggerFilterOptions>(options => {
     var ruleToRemove = options.Rules.FirstOrDefault(
         rule => rule.ProviderName == "Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider");
