@@ -17,17 +17,15 @@ builder.Services.Configure<LoggerFilterOptions>(options => {
 var app = builder.Build();
 
 app.MapGet("/", (ILogger<Program> logger) => {
-    var timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-    logger.LogInformation("{time} - Endpoint '/' was hit - returning hello world", timestamp);
-    return $"hello world {timestamp}";
+    logger.LogInformation($"{DateTime.Now:yyyy-MM-dd HH:mm:ss}, '/' - hello world");
+    return "Hello World";
 });
 
 
-// get random number endpoint return number between 1000 and 9999
 app.MapGet("/random", (ILogger<Program> logger) => {
     var random = new Random();
     var randomNumber = random.Next(1000, 9999);
-    logger.LogInformation("{time} - Endpoint '/random' was hit - returning random number {randomNumber}", DateTime.Now.ToString("HH:mm:ss"), randomNumber);
+    logger.LogInformation($"{DateTime.Now:yyyy-MM-dd HH:mm:ss}, '/random' - number: {randomNumber}");
     return randomNumber;
 });
 
