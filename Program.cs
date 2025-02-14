@@ -7,8 +7,8 @@ builder.Logging.AddConsole();
 builder.Logging.AddApplicationInsights();
 builder.Logging.AddAzureWebAppDiagnostics();
 
-builder.Services.AddApplicationInsightsTelemetry(o => o.EnableAdaptiveSampling = false);
-builder.Services.Configure<AzureFileLoggerOptions>(builder.Configuration.GetSection("AzureLogging"));
+// builder.Services.AddApplicationInsightsTelemetry(o => o.EnableAdaptiveSampling = false);
+// builder.Services.Configure<AzureFileLoggerOptions>(builder.Configuration.GetSection("AzureLogging"));
 
 var app = builder.Build();
 
