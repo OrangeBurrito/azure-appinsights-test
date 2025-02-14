@@ -6,15 +6,6 @@ builder.Logging.AddApplicationInsights();
 
 builder.Services.AddApplicationInsightsTelemetry();
 
-// builder.Services.Configure<LoggerFilterOptions>(options => {
-//     var ruleToRemove = options.Rules.FirstOrDefault(
-//         rule => rule.ProviderName == "Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider");
-
-//     if (ruleToRemove != null) {
-//         options.Rules.Remove(ruleToRemove);
-//     }
-// });
-
 var app = builder.Build();
 
 app.MapGet("/", (ILogger<Program> logger) => {
