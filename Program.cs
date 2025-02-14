@@ -1,10 +1,13 @@
+using Microsoft.Extensions.Logging.AzureAppServices;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.AddApplicationInsights();
 
-builder.Services.AddApplicationInsightsTelemetry();
+builder.Services.AddApplicationInsightsTelemetry(o => o.EnableAdaptiveSampling = false);
+builder.Services.Configure<AzureFileLoggerOptions>(builder.Configuration.GetSection("AzureLogging"));
 
 var app = builder.Build();
 
