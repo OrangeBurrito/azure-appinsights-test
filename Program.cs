@@ -1,5 +1,3 @@
-using Microsoft.Extensions.Logging.AzureAppServices;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.ClearProviders();
@@ -7,8 +5,12 @@ builder.Logging.AddConsole();
 builder.Logging.AddApplicationInsights();
 builder.Logging.AddAzureWebAppDiagnostics();
 
-// builder.Services.AddApplicationInsightsTelemetry(o => o.EnableAdaptiveSampling = false);
-// builder.Services.Configure<AzureFileLoggerOptions>(builder.Configuration.GetSection("AzureLogging"));
+builder.Services.Configure<LoggerFilterOptions>(o => {
+    LoggerFilterRule toRemove = o.Rules.FirstOrDefault(rule => rule.ProviderName == "Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider");
+    if (toRemove != null) { 
+        o.Rules.Remove(toRemove);
+    }
+});
 
 var app = builder.Build();
 
