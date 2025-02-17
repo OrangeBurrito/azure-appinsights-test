@@ -1,16 +1,19 @@
+using Azure.Monitor.OpenTelemetry.AspNetCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.AddApplicationInsights();
 builder.Logging.AddAzureWebAppDiagnostics();
+builder.Services.AddOpenTelemetry().UseAzureMonitor();
 
-builder.Services.Configure<LoggerFilterOptions>(o => {
-    LoggerFilterRule toRemove = o.Rules.FirstOrDefault(rule => rule.ProviderName == "Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider");
-    if (toRemove != null) { 
-        o.Rules.Remove(toRemove);
-    }
-});
+// builder.Services.Configure<LoggerFilterOptions>(o => {
+//     LoggerFilterRule toRemove = o.Rules.FirstOrDefault(rule => rule.ProviderName == "Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider");
+//     if (toRemove != null) { 
+//         o.Rules.Remove(toRemove);
+//     }
+// });
 
 var app = builder.Build();
 
