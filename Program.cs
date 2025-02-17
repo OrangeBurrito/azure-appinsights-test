@@ -4,8 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
-// builder.Logging.AddApplicationInsights();
-// builder.Logging.AddAzureWebAppDiagnostics();
+builder.Logging.AddAzureWebAppDiagnostics();
 builder.Services.AddOpenTelemetry().UseAzureMonitor();
 
 // builder.Services.Configure<LoggerFilterOptions>(o => {
